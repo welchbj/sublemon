@@ -1,0 +1,11 @@
+__pycache__
+.mypy_cache/
+sublemon.egg-info/
+*.py[cod]
+*.egg
+
+.tox
+.vscode
+build
+dist
+todo.txt
