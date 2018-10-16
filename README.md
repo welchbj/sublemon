@@ -23,7 +23,7 @@ pip install https://github.com/welchbj/sublemon/archive/master.tar.gz
 
 ## Basic Usage
 
-The [`demo/readme.py`](demo/readme.py) script (shown below) provides a simple example of spawning subprocesses with `sublemon`.
+The [`demos/readme.py`](demos/readme.py) script (shown below) provides a simple example of spawning subprocesses with `sublemon`.
 ```python
 """Demo from the README."""
 
