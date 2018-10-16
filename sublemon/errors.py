@@ -2,10 +2,8 @@
 
 
 class SublemonError(Exception):
-    # TODO
-    pass
+    """Base exception type for the `sublemon` library."""
 
 
-class SublemonRuntimeError(Exception):
-    # TODO
-    pass
+class SublemonRuntimeError(SublemonError):
+    """Exception type for `sublemon` runtime errors."""

@@ -7,14 +7,12 @@ from typing import (
     AsyncGenerator,
     Optional)
 
-from sublemon.server import SublemonServer
-
 
 class SublemonSubprocess:
 
-    """TODO."""
+    """Logical encapsulation of a subprocess."""
 
-    def __init__(self, server: SublemonServer, cmd: str) -> None:
+    def __init__(self, server: 'Sublemon', cmd: str) -> None:
         self._server = server
         self._cmd = cmd
         self._scheduled_at = datetime.now()
@@ -28,8 +26,7 @@ class SublemonSubprocess:
         return '<SublemonSubprocess [{}]>'.format(str(self))
 
     def __str__(self) -> str:
-        # TODO
-        pass
+        return '{} -> `{}`'.format(self._scheduled_at, self._cmd)
 
     def __hash__(self) -> int:
         return hash((self._cmd, self._scheduled_at,))
