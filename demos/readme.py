@@ -21,7 +21,7 @@ async def main():
 
 
 async def one(s: Sublemon):
-    """Say 'hi' and 'bye' using output merging."""
+    """Spin up some subprocesses, sleep, and echo a message for this coro."""
     shell_cmds = [
         'sleep 1 && echo subprocess 1 in coroutine one',
         'sleep 1 && echo subprocess 2 in coroutine one']
@@ -30,7 +30,7 @@ async def one(s: Sublemon):
 
 
 async def two(s: Sublemon):
-    """Say 'hi' and 'bye' via stdout pipes."""
+    """Spin up some subprocesses, sleep, and echo a message for this coro."""
     echo_hi, echo_bye = s.spawn(
         'sleep 1 && echo subprocess 1 in coroutine two',
         'sleep 1 && echo subprocess 2 in coroutine two')

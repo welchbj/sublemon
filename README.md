@@ -25,8 +25,6 @@ pip install https://github.com/welchbj/sublemon/archive/master.tar.gz
 
 The [`demos/readme.py`](demos/readme.py) script (shown below) provides a simple example of spawning subprocesses with `sublemon`.
 ```python
-"""Demo from the README."""
-
 import asyncio
 import time
 
@@ -48,7 +46,7 @@ async def main():
 
 
 async def one(s: Sublemon):
-    """Say 'hi' and 'bye' using output merging."""
+    """Spin up some subprocesses, sleep, and echo a message for this coro."""
     shell_cmds = [
         'sleep 1 && echo subprocess 1 in coroutine one',
         'sleep 1 && echo subprocess 2 in coroutine one']
@@ -57,7 +55,7 @@ async def one(s: Sublemon):
 
 
 async def two(s: Sublemon):
-    """Say 'hi' and 'bye' via stdout pipes."""
+    """Spin up some subprocesses, sleep, and echo a message for this coro."""
     echo_hi, echo_bye = s.spawn(
         'sleep 1 && echo subprocess 1 in coroutine two',
         'sleep 1 && echo subprocess 2 in coroutine two')
@@ -70,7 +68,7 @@ if __name__ == '__main__':
 
 ```
 
-Executing this script should provide the following output:
+Executing this script provides the following output, exemplifying `sublemon`'s concurrency-limiting functionality:
 ```
 subprocess 1 in coroutine one
 subprocess 2 in coroutine one
