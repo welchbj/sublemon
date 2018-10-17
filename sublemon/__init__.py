@@ -1,3 +1,6 @@
+from .errors import (  # noqa
+    SublemonError,
+    SublemonRuntimeError)
 from .runtime import Sublemon  # noqa
 from .subprocess import SublemonSubprocess  # noqa
 from .utils import (  # noqa
