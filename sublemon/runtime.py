@@ -75,17 +75,21 @@ class Sublemon:
         async for line in amerge(*[sp.stdout for sp in sps]):
             yield line.decode('utf-8').rstrip()
 
-    async def spawn_and_complete(self, *cmds: str) -> None:
+    async def spawn_and_complete(self, *cmds: str) -> List[int]:
         """Coroutine to spawn subprocesses and block until completion.
 
         Note:
-            The same ``max_concurrency`` restriction that applies to ``spawn``
+            The same `max_concurrency` restriction that applies to `spawn`
             also applies here.
+
+        Returns:
+            The exit codes of the spawned subprocesses, in the order passed
+            to this function.
 
         """
         subprocs = await self.spawn(*cmds)
         subproc_wait_coros = [subproc.wait_done() for subproc in subprocs]
-        await asyncio.gather(*subproc_wait_coros)
+        return await asyncio.gather(*subproc_wait_coros)
 
     def spawn(self, *cmds: str) -> List[SublemonSubprocess]:
         """Coroutine to spawn shell commands.
