@@ -102,6 +102,11 @@ class SublemonSubprocess:
             yield line
 
     @property
+    def cmd(self) -> str:
+        """The shell command that this subprocess will/is/did run."""
+        return self._cmd
+
+    @property
     def exit_code(self) -> Optional[int]:
         """The exit code of this subprocess."""
         return self._subprocess.returncode
