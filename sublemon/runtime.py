@@ -67,7 +67,7 @@ class Sublemon:
         """Coroutine to spawn commands and async yield decoded text lines.
 
         Note:
-            The same ``max_concurrency`` restriction that applies to ``spawn``
+            The same `max_concurrency` restriction that applies to `spawn`
             also applies here.
 
         """
@@ -94,7 +94,7 @@ class Sublemon:
     def spawn(self, *cmds: str) -> List[SublemonSubprocess]:
         """Coroutine to spawn shell commands.
 
-        If ``max_concurrency`` is reached during the attempt to spawn the
+        If `max_concurrency` is reached during the attempt to spawn the
         specified subprocesses, excess subprocesses will block while attempting
         to acquire this server's semaphore.
 

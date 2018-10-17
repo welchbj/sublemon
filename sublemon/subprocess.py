@@ -137,7 +137,7 @@ class SublemonSubprocess:
         """The time the subprocess began execution.
 
         Note:
-            This will be ``None`` until the subprocess has actually begun
+            This will be `None` until the subprocess has actually begun
             execution.
 
         """
