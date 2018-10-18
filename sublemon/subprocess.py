@@ -68,16 +68,6 @@ class SublemonSubprocess:
         await self._done_running_evt.wait()
         return self._exit_code
 
-    async def kill(self) -> int:
-        """Coroutine to kill the subprocess and wait its completion.
-
-        Returns:
-            The exit code of the subprocess.
-
-        """
-        self._subprocess.kill()
-        return await self.wait_done()
-
     def _poll(self) -> None:
         """Check the status of the wrapped running subprocess.
 

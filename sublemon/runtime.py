@@ -1,6 +1,7 @@
 """The main event of this library."""
 
 import asyncio
+import itertools
 
 from contextlib import suppress
 from typing import (
@@ -42,7 +43,7 @@ class Sublemon:
             raise SublemonRuntimeError(
                 'Attempted to start an already-running `Sublemon` instance')
 
-        self._task = asyncio.ensure_future(self._poll())
+        self._poll_task = asyncio.ensure_future(self._poll())
         self._is_running = True
 
     async def stop(self) -> None:
@@ -51,12 +52,11 @@ class Sublemon:
             raise SublemonRuntimeError(
                 'Attempted to stop an already-stopped `Sublemon` instance')
 
-        self._task.cancel()
-        kill_coros = [sp.kill() for sp in self._running_set]
-        await asyncio.gather(*kill_coros)
+        await self.block()
+        self._poll_task.cancel()
         self._is_running = False
         with suppress(asyncio.CancelledError):
-            await self._task
+            await self._poll_task
 
     async def _poll(self) -> None:
         """Coroutine to poll status of running subprocesses."""
@@ -65,10 +65,10 @@ class Sublemon:
             for subproc in list(self._running_set):
                 subproc._poll()
 
-    async def joined_lines(
+    async def iter_lines(
             self,
-            stream: str='both',
-            *cmds: str) -> AsyncGenerator[str, None]:
+            *cmds: str,
+            stream: str='both') -> AsyncGenerator[str, None]:
         """Coroutine to spawn commands and yield text lines from stdout."""
         sps = self.spawn(*cmds)
         if stream == 'both':
@@ -101,6 +101,13 @@ class Sublemon:
         subproc_wait_coros = [subproc.wait_done() for subproc in subprocs]
         return await asyncio.gather(*subproc_wait_coros)
 
+    async def block(self) -> None:
+        """Block until all running and pending subprocesses have finished."""
+        await asyncio.gather(
+            *itertools.chain(
+                (sp.wait_done() for sp in self._running_set),
+                (sp.wait_done() for sp in self._pending_set)))
+
     def spawn(self, *cmds: str) -> List[SublemonSubprocess]:
         """Coroutine to spawn shell commands.
 
@@ -109,6 +116,10 @@ class Sublemon:
         to acquire this server's semaphore.
 
         """
+        if not self._is_running:
+            raise SublemonRuntimeError(
+                'Attempted to spawn subprocesses from a non-started server')
+
         subprocs = [SublemonSubprocess(self, cmd) for cmd in cmds]
         for sp in subprocs:
             asyncio.ensure_future(sp.spawn())
