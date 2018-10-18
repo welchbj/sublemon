@@ -7,7 +7,3 @@ class SublemonError(Exception):
 
 class SublemonRuntimeError(SublemonError):
     """Exception type for `sublemon` runtime errors."""
-
-
-class SublemonSubprocessLifetimeError(SublemonError):
-    """Exception type for accessing non-existent attributes on a subprocess."""
