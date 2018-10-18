@@ -21,70 +21,14 @@ pip install https://github.com/welchbj/sublemon/archive/master.tar.gz
 ```
 
 
-## Basic Usage
+## Development
 
-The [`demos/readme.py`](demos/readme.py) script (shown below) provides a simple example of spawning subprocesses with `sublemon`.
-```python
-import asyncio
-import time
-
-from sublemon import (
-    amerge,
-    crossplat_loop_run,
-    Sublemon)
-
-
-async def main():
-    """`sublemon` library example!"""
-    for c in (1, 2, 4,):
-        async with Sublemon(max_concurrency=c) as s:
-            start = time.time()
-            await asyncio.gather(one(s), two(s))
-            end = time.time()
-            print('Limiting to', c, 'concurrent subprocess(es) took',
-                  end-start, 'seconds\n')
-
-
-async def one(s: Sublemon):
-    """Spin up some subprocesses, sleep, and echo a message for this coro."""
-    shell_cmds = [
-        'sleep 1 && echo subprocess 1 in coroutine one',
-        'sleep 1 && echo subprocess 2 in coroutine one']
-    async for line in s.stdout_lines(*shell_cmds):
-        print(line)
-
-
-async def two(s: Sublemon):
-    """Spin up some subprocesses, sleep, and echo a message for this coro."""
-    subprocess_1, subprocess_2 = s.spawn(
-        'sleep 1 && echo subprocess 1 in coroutine two',
-        'sleep 1 && echo subprocess 2 in coroutine two')
-    async for line in amerge(subprocess_1.stdout, subprocess_2.stdout):
-        print(line.decode('utf-8'), end='')
-
-
-if __name__ == '__main__':
-    crossplat_loop_run(main())
-
+The development requirements can be installed with:
+```sh
+pip install -r dev-requirements.txt
 ```
 
-Executing this script provides the following output, exemplifying `sublemon`'s concurrency-limiting functionality:
-```
-subprocess 1 in coroutine one
-subprocess 2 in coroutine one
-subprocess 1 in coroutine two
-subprocess 2 in coroutine two
-Limiting to 1 concurrent subprocess(es) took 4.439314842224121 seconds
-
-subprocess 1 in coroutine two
-subprocess 2 in coroutine two
-subprocess 1 in coroutine one
-subprocess 2 in coroutine one
-Limiting to 2 concurrent subprocess(es) took 2.2350566387176514 seconds
-
-subprocess 1 in coroutine two
-subprocess 1 in coroutine one
-subprocess 2 in coroutine two
-subprocess 2 in coroutine one
-Limiting to 4 concurrent subprocess(es) took 1.0966482162475586 seconds
+Then try running the tests with:
+```sh
+python -m unittest discover
 ```
