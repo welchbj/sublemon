@@ -87,7 +87,7 @@ class TestRuntime(unittest.TestCase):
         crossplat_loop_run(test())
 
     def test_joined_lines(self):
-        """Test joining and iterating over lines joined from subprocesses."""
+        """Test iterating over lines joined from subprocesses."""
         async def test():
             # TODO
             assert True
