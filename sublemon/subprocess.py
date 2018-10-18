@@ -1,6 +1,7 @@
 """Models for interacting with subprocesses."""
 
 import asyncio
+import uuid
 
 from datetime import datetime
 from typing import (
@@ -16,6 +17,7 @@ class SublemonSubprocess:
         self._server = server
         self._cmd = cmd
         self._scheduled_at = datetime.now()
+        self._uuid = uuid.uuid4()
         self._began_at: Optional[datetime] = None
         self._exit_code: Optional[int] = None
         self._subprocess: Optional[asyncio.subprocess.Process] = None
@@ -29,7 +31,7 @@ class SublemonSubprocess:
         return '{} -> `{}`'.format(self._scheduled_at, self._cmd)
 
     def __hash__(self) -> int:
-        return hash((self._cmd, self._scheduled_at,))
+        return hash((self._cmd, self._uuid,))
 
     def __eq__(self, other) -> bool:
         return (self._cmd == other._cmd and
@@ -47,9 +49,10 @@ class SublemonSubprocess:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE)
         self._began_at = datetime.now()
-        self._began_running_evt.set()
-        self._server._pending_set.remove(self)
+        if self in self._server._pending_set:
+            self._server._pending_set.remove(self)
         self._server._running_set.add(self)
+        self._began_running_evt.set()
 
     async def wait_running(self) -> None:
         """Coroutine to wait for this subprocess to begin execution."""
@@ -110,7 +113,7 @@ class SublemonSubprocess:
     @property
     def exit_code(self) -> Optional[int]:
         """The exit code of this subprocess."""
-        return self._subprocess.returncode
+        return self._exit_code
 
     @property
     def is_pending(self) -> bool:
