@@ -13,7 +13,7 @@ from sublemon.subprocess import SublemonSubprocess
 from sublemon.utils import amerge
 
 _DEFAULT_MC: int = 25
-_DEFAULT_PD: float = 0.1
+_DEFAULT_PD: float = 0.01
 
 
 class Sublemon:
