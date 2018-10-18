@@ -52,6 +52,8 @@ class Sublemon:
                 'Attempted to stop an already-stopped `Sublemon` instance')
 
         self._task.cancel()
+        kill_coros = [sp.kill() for sp in self._running_set]
+        await asyncio.gather(*kill_coros)
         self._is_running = False
         with suppress(asyncio.CancelledError):
             await self._task
@@ -63,19 +65,27 @@ class Sublemon:
             for subproc in list(self._running_set):
                 subproc._poll()
 
-    async def stdout_lines(self, *cmds: str) -> AsyncGenerator[str, None]:
-        """Coroutine to spawn commands and async yield decoded text lines.
-
-        Note:
-            The same `max_concurrency` restriction that applies to `spawn`
-            also applies here.
-
-        """
+    async def joined_lines(
+            self,
+            stream: str='both',
+            *cmds: str) -> AsyncGenerator[str, None]:
+        """Coroutine to spawn commands and yield text lines from stdout."""
         sps = self.spawn(*cmds)
-        async for line in amerge(*[sp.stdout for sp in sps]):
+        if stream == 'both':
+            agen = amerge(
+                amerge(*[sp.stdout for sp in sps]),
+                amerge(*[sp.stderr for sp in sps]))
+        elif stream == 'stdout':
+            agen = amerge(*[sp.stdout for sp in sps])
+        elif stream == 'stderr':
+            agen = amerge(*[sp.stderr for sp in sps])
+        else:
+            raise SublemonRuntimeError(
+                'Invalid `stream` kwarg received: `' + str(stream) + '`')
+        async for line in agen:
             yield line.decode('utf-8').rstrip()
 
-    async def spawn_and_complete(self, *cmds: str) -> List[int]:
+    async def gather(self, *cmds: str) -> List[int]:
         """Coroutine to spawn subprocesses and block until completion.
 
         Note:
@@ -83,11 +93,11 @@ class Sublemon:
             also applies here.
 
         Returns:
-            The exit codes of the spawned subprocesses, in the order passed
-            to this function.
+            The exit codes of the spawned subprocesses, in the order they were
+            passed.
 
         """
-        subprocs = await self.spawn(*cmds)
+        subprocs = self.spawn(*cmds)
         subproc_wait_coros = [subproc.wait_done() for subproc in subprocs]
         return await asyncio.gather(*subproc_wait_coros)
 
