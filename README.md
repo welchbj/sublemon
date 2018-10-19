@@ -1,12 +1,21 @@
-# sublemon
+<h1 align="center">Sublemon</h1>
 
-A local server for asynchronously spawning and monitoring subprocesses via `asyncio`. Very much a work in progress.
+<p align="center">
+  :melon: <em>local asynchronous subprocess control</em> :lemon:
+</p>
+<p align="center">
+  <a href="https://travis-ci.org/welchbj/sublemon">
+    <img src="https://img.shields.io/travis/welchbj/sublemon/master.svg?style=flat-square&label=travis" alt="travis status">
+  </a>
+  <a href="https://pypi.org/project/sublemon/">
+    <img src="https://img.shields.io/pypi/v/sublemon.svg?style=flat-square&label=pypi" alt="pypi">
+  </a>
+  <a href="https://www.kali.org/">
+    <img src="https://img.shields.io/badge/python-3.6+-2a98ed.svg?style=flat-square" alt="python version">
+  </a>
+</p>
 
-
-## License
-
-`sublemon` uses the [MIT License](https://opensource.org/licenses/MIT).
-
+---
 
 ## Installation
 
@@ -88,6 +97,11 @@ subprocess 1 in coroutine two
 subprocess 2 in coroutine two
 Limiting to 4 concurrent subprocess(es) took 1.083995944693033 seconds
 ```
+
+
+## License
+
+`sublemon` uses the [MIT License](https://opensource.org/licenses/MIT).
 
 
 ## Development
