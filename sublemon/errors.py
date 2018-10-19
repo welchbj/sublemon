@@ -7,3 +7,7 @@ class SublemonError(Exception):
 
 class SublemonRuntimeError(SublemonError):
     """Exception type for `sublemon` runtime errors."""
+
+
+class SublemonLifetimeError(SublemonError):
+    """Exception type for improper access of `sublemon` object attributes."""

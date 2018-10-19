@@ -9,6 +9,8 @@ from typing import (
     Optional,
     TYPE_CHECKING)
 
+from sublemon.errors import SublemonLifetimeError
+
 if TYPE_CHECKING:
     from sublemon.runtime import Sublemon  # noqa
 
@@ -71,7 +73,8 @@ class SublemonSubprocess:
         """
         await self._done_running_evt.wait()
         if self._exit_code is None:
-            return 2
+            raise SublemonLifetimeError(
+                'Subprocess exited abnormally with `None` exit code')
         return self._exit_code
 
     def _poll(self) -> None:
@@ -82,8 +85,8 @@ class SublemonSubprocess:
 
         """
         if self._subprocess is None:
-            # TODO
-            pass
+            raise SublemonLifetimeError(
+                'Attempted to poll a non-active subprocess')
         elif self._subprocess.returncode is not None:
             self._exit_code = self._subprocess.returncode
             self._done_running_evt.set()
