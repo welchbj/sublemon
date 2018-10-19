@@ -13,9 +13,9 @@ async def main():
     """`sublemon` library example!"""
     for c in (1, 2, 4,):
         async with Sublemon(max_concurrency=c) as s:
-            start = time.time()
+            start = time.perf_counter()
             await asyncio.gather(one(s), two(s))
-            end = time.time()
+            end = time.perf_counter()
             print('Limiting to', c, 'concurrent subprocess(es) took',
                   end-start, 'seconds\n')
 
@@ -25,7 +25,7 @@ async def one(s: Sublemon):
     shell_cmds = [
         'sleep 1 && echo subprocess 1 in coroutine one',
         'sleep 1 && echo subprocess 2 in coroutine one']
-    async for line in s.stdout_lines(*shell_cmds):
+    async for line in s.iter_lines(*shell_cmds):
         print(line)
 
 
