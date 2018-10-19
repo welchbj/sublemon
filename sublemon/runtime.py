@@ -30,6 +30,17 @@ class Sublemon:
         self._pending_set: Set[SublemonSubprocess] = set()
         self._running_set: Set[SublemonSubprocess] = set()
 
+    def __str__(self):
+        return ('max concurrency: {}, poll delta: {}, {} running and {} '
+                'pending subprocesses').format(
+                    self._max_concurrency,
+                    self._poll_delta,
+                    len(self._running_set),
+                    len(self._pending_set))
+
+    def __repr__(self):
+        return '<Sublemon [{}]>'.format(str(self))
+
     async def __aenter__(self):
         await self.start()
         return self
