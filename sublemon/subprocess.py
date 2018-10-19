@@ -6,7 +6,11 @@ import uuid
 from datetime import datetime
 from typing import (
     AsyncGenerator,
-    Optional)
+    Optional,
+    TYPE_CHECKING)
+
+if TYPE_CHECKING:
+    from sublemon.runtime import Sublemon  # noqa
 
 
 class SublemonSubprocess:
@@ -66,6 +70,8 @@ class SublemonSubprocess:
 
         """
         await self._done_running_evt.wait()
+        if self._exit_code is None:
+            return 2
         return self._exit_code
 
     def _poll(self) -> None:
@@ -75,7 +81,10 @@ class SublemonSubprocess:
             This should only be called on currently-running tasks.
 
         """
-        if self._subprocess.returncode is not None:
+        if self._subprocess is None:
+            # TODO
+            pass
+        elif self._subprocess.returncode is not None:
             self._exit_code = self._subprocess.returncode
             self._done_running_evt.set()
             self._server._running_set.remove(self)

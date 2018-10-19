@@ -7,7 +7,8 @@ from contextlib import suppress
 from typing import (
     AsyncGenerator,
     List,
-    Set)
+    Set,
+    Tuple)
 
 from sublemon.errors import SublemonRuntimeError
 from sublemon.subprocess import SublemonSubprocess
@@ -96,7 +97,7 @@ class Sublemon:
         async for line in agen:
             yield line.decode('utf-8').rstrip()
 
-    async def gather(self, *cmds: str) -> List[int]:
+    async def gather(self, *cmds: str) -> Tuple[int]:
         """Coroutine to spawn subprocesses and block until completion.
 
         Note:
@@ -110,7 +111,7 @@ class Sublemon:
         """
         subprocs = self.spawn(*cmds)
         subproc_wait_coros = [subproc.wait_done() for subproc in subprocs]
-        return await asyncio.gather(*subproc_wait_coros)
+        return await asyncio.gather(*subproc_wait_coros)  # type: ignore
 
     async def block(self) -> None:
         """Block until all running and pending subprocesses have finished."""
