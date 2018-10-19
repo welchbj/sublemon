@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
 ```
 
-Executing this example would yield the following console output, demonstrating `sublemon`'a ability to rate-limit pooled subprocess execution:
+Running this example would yield the following console output, demonstrating `sublemon`'s ability to rate-limit pooled subprocess execution:
 ```
 subprocess 1 in coroutine one
 subprocess 2 in coroutine one
