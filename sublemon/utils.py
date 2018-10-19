@@ -18,13 +18,8 @@ async def amerge(*agens) -> AsyncGenerator[Any, None]:
             yield x
 
 
-def crossplat_loop_run(coro) -> Any:
-    """Cross-platform method for running a subprocess-spawning coroutine.
-
-    Returns:
-        The result of the coroutine.
-
-    """
+def crossplat_loop_run(coro) -> None:
+    """Cross-platform method for running a subprocess-spawning coroutine."""
     if sys.platform == 'win32':
         loop = asyncio.ProactorEventLoop()
     else:
