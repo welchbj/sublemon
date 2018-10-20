@@ -14,7 +14,7 @@
   <a href="https://pypi.org/project/sublemon/">
     <img src="https://img.shields.io/pypi/v/sublemon.svg?style=flat-square&label=pypi" alt="pypi">
   </a>
-  <a href="https://www.kali.org/">
+  <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/python-3.6+-2a98ed.svg?style=flat-square" alt="python version">
   </a>
 </p>
