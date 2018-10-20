@@ -2,6 +2,7 @@
 
 import asyncio
 import contextlib
+import signal
 import sys
 
 from aiostream import stream
@@ -18,13 +19,14 @@ async def amerge(*agens) -> AsyncGenerator[Any, None]:
             yield x
 
 
-def crossplat_loop_run(coro) -> None:
+def crossplat_loop_run(coro) -> Any:
     """Cross-platform method for running a subprocess-spawning coroutine."""
     if sys.platform == 'win32':
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
         loop = asyncio.ProactorEventLoop()
     else:
         loop = asyncio.new_event_loop()
 
     asyncio.set_event_loop(loop)
     with contextlib.closing(loop):
-        loop.run_until_complete(coro)
+        return loop.run_until_complete(coro)
