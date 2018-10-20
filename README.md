@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" height="200" src="static/logo.png" alt="bscan">
+</p>
+
 <h1 align="center">Sublemon</h1>
 
 <p align="center">
