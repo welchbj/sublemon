@@ -112,7 +112,7 @@ Limiting to 4 concurrent subprocess(es) took 1.083995944693033 seconds
 
 The development requirements can be installed with:
 ```sh
-pip install -r dev-requirements.txt
+pip install -r requirements.txt
 ```
 
 Then try running the tests with:
