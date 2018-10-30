@@ -7,4 +7,4 @@ install:
 script:
   - flake8 .
   - mypy sublemon
-  - python -m unittest discover
+  - python test.py

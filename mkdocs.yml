@@ -1,0 +1,34 @@
+site_name: Sublemon
+site_description: Local asynchronous subprocess control
+site_author: Brian Welch
+site_url: 'https://sublemon.brianwel.ch'
+copyright: 'Copyright &copy; 2018 Brian Welch'
+repo_name: welchbj/sublemon
+repo_url: https://github.com/welchbj/sublemon
+
+nav:
+  - Introduction: index.md
+  - 'Working with the runtime': sublemon-objects.md
+  - 'Working with subprocesses': subprocess-objects.md
+  - Utilities: utilities.md
+  - Exceptions: exceptions.md
+
+theme:
+  name: 'material'
+  language: 'en'
+  custom_dir: 'docs-theme'
+  favicon: 'img/logo.ico'
+  palette:
+    primary: 'lime'
+    accent: 'lime'
+  logo:
+    icon: 'all_inclusive'
+
+extra_css:
+  - 'stylesheets/extra.css'
+
+markdown_extensions:
+  - markdown.extensions.codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true

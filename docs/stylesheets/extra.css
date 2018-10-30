@@ -1,0 +1,6 @@
+::selection {
+  background: rgb(238, 242, 184);
+}
+::-moz-selection {
+  background: rgb(238, 242, 184);
+}
