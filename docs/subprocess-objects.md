@@ -15,17 +15,17 @@ This class also provides some awaitable events in the form of `wait_running` and
 >>> from sublemon import crossplat_loop_run, Sublemon
 >>> async def example():
 ...     async with Sublemon(max_concurrency=1) as s:
-...             sp_one, sp_two = s.spawn(
-...                     'python -c "import time; time.sleep(1)"',
-...                     'python -c "import time; time.sleep(1)"')
-...             await asyncio.gather(
-...                     sp_one.wait_running(),
-...                     sp_two.wait_running())
-...             print('Both subprocesses now running!')
-...             await asyncio.gather(
-...                     sp_one.wait_done(),
-...                     sp_two.wait_done())
-...             print('Both subprocesses all done!')
+...         sp_one, sp_two = s.spawn(
+...                 'python -c "import time; time.sleep(1)"',
+...                 'python -c "import time; time.sleep(1)"')
+...         await asyncio.gather(
+...                 sp_one.wait_running(),
+...                 sp_two.wait_running())
+...         print('Both subprocesses now running!')
+...         await asyncio.gather(
+...                 sp_one.wait_done(),
+...                 sp_two.wait_done())
+...         print('Both subprocesses all done!')
 ...
 >>> crossplat_loop_run(example())
 Both subprocesses now running!
