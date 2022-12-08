@@ -1,6 +1,6 @@
 aiostream==0.3.1
 bleach==3.0.2
-certifi==2018.10.15
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 Click==7.0
